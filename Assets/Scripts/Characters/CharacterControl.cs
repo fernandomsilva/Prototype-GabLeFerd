@@ -9,11 +9,14 @@ public class CharacterControl : MonoBehaviour
 	
 	public int movementRange;
 	
+	private OccupiedCells blockedCells;
 	private List<Vector3Int> rangeOfAction;
 	
     // Start is called before the first frame update
     void Start()
     {
+		blockedCells = levelTilemap.GetComponent<OccupiedCells>();
+
         MoveToCell(new Vector3Int(0, 0, 0));
 		
 		rangeOfAction = new List<Vector3Int>();
@@ -30,7 +33,12 @@ public class CharacterControl : MonoBehaviour
 	
 	void MoveToCell(Vector3Int cell)
 	{
+		Vector3Int previousPosition = levelTilemap.WorldToCell(transform.position);
+		
 		transform.position = levelTilemap.GetCellCenterWorld(cell);
+		
+		blockedCells.RemoveOccupiedCell(previousPosition);
+		blockedCells.AddOccupiedCell(cell);
 	}
 
     // Update is called once per frame
@@ -41,25 +49,34 @@ public class CharacterControl : MonoBehaviour
 			Vector3Int myCellPosition = levelTilemap.WorldToCell(transform.position);
 			rangeOfAction.Clear();
 
+			rangeOfAction.Add(myCellPosition);
+
 			for (int i=movementRange; i>=0; i--)
 			{
 				for (int j=movementRange-i; j>=0; j--)
 				{
-					if (i != 0 || j != 0)
+					Vector3Int cell = myCellPosition + (new Vector3Int(i, j, 0));
+					if (!blockedCells.IsCellOccupied(cell))
 					{
-						rangeOfAction.Add(myCellPosition + (new Vector3Int(i, j, 0)));
-						if (i > 0)
-						{
-							rangeOfAction.Add(myCellPosition + (new Vector3Int(-i, j, 0)));
-						}
-						if (j > 0)
-						{
-							rangeOfAction.Add(myCellPosition + (new Vector3Int(i, -j, 0)));
-						}
-						if (i > 0 && j > 0)
-						{
-							rangeOfAction.Add(myCellPosition + (new Vector3Int(-i, -j, 0)));
-						}
+						rangeOfAction.Add(cell);
+					}
+					
+					cell = myCellPosition + (new Vector3Int(-i, j, 0));
+					if (i > 0 && !blockedCells.IsCellOccupied(cell))
+					{
+						rangeOfAction.Add(cell);
+					}
+					
+					cell = myCellPosition + (new Vector3Int(i, -j, 0));
+					if (j > 0 && !blockedCells.IsCellOccupied(cell))
+					{
+						rangeOfAction.Add(cell);
+					}
+					
+					cell = myCellPosition + (new Vector3Int(-i, -j, 0));
+					if (i > 0 && j > 0 && !blockedCells.IsCellOccupied(cell))
+					{
+						rangeOfAction.Add(cell);
 					}
 				}
 			}
