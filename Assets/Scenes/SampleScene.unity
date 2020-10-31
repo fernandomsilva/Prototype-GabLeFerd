@@ -2368,7 +2368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &509624096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2463,9 +2463,10 @@ GameObject:
   - component: {fileID: 820856495}
   - component: {fileID: 820856494}
   - component: {fileID: 820856493}
+  - component: {fileID: 820856496}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2547,6 +2548,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &820856496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820856492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754cd71d60dfdaa4d9f34d2768c310ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charName: Beta
+  job: Mage
+  currentHealth: 0
+  maxHealth: 100
+  currentMana: 0
+  maxMana: 100
+  moveSpeed: 2
+  meleeAttack: 2
+  rangedAttack: 2
+  meleeAttackRange: 2
+  rangedAttackRange: 2
+  meleeDefense: 2
+  rangedDefense: 2
+  magicAttack: 2
+  magicDefense: 2
+  isThisMyTurn: 0
+  movedThisTurn: 0
+  attackedThisTurn: 0
+  isNarrativeActive: 0
 --- !u!1 &847496418
 GameObject:
   m_ObjectHideFlags: 0
@@ -2565,7 +2597,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &847496419
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2819,6 +2851,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1137187507}
+  - component: {fileID: 1137187508}
+  - component: {fileID: 1137187509}
+  - component: {fileID: 1137187510}
   m_Layer: 0
   m_Name: Narrative Director
   m_TagString: Untagged
@@ -2834,12 +2869,57 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1137187506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.118570134, y: 1.3793515, z: -714.7846}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1137187508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137187506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81704c5a1c94d341ba8fb0309ff270f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueDataFile: {fileID: 4900000, guid: 4b944f8fe0a74c244ab2d337da42b0b2, type: 3}
+--- !u!114 &1137187509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137187506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a2ffb1825d3aa4a88fc9a2c234a1ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 509624095}
+  dialogueBoxText: {fileID: 904792659}
+  dialogueBoxOption1: {fileID: 847496418}
+  dialogueBoxOption1Text: {fileID: 1347692028}
+  dialogueBoxOption2: {fileID: 1164256905}
+  dialogueBoxOption2Text: {fileID: 1434224686}
+  narrativeActive: 0
+--- !u!114 &1137187510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137187506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1b6cd7e193e0d489e73024ef2028f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelTilemap: {fileID: 10002998}
 --- !u!1 &1164256905
 GameObject:
   m_ObjectHideFlags: 0
@@ -2858,7 +2938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1164256906
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3129,7 +3209,7 @@ GameObject:
   - component: {fileID: 1587021437}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3211,7 +3291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelTilemap: {fileID: 10002998}
-  movementRange: 2
+  startCell: {x: 0, y: 0, z: 0}
 --- !u!1 &1587021435
 GameObject:
   m_ObjectHideFlags: 0
@@ -3261,19 +3341,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf38aa33253197d44a87e3d0c8ccf569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
-  job: 
+  charName: Hugo
+  job: Knight
   currentHealth: 0
-  maxHealth: 0
+  maxHealth: 150
   currentMana: 0
-  maxMana: 0
-  moveSpeed: 0
-  meleeAttack: 0
-  rangedAttack: 0
-  meleeDefense: 0
-  rangedDefense: 0
+  maxMana: 50
+  moveSpeed: 3
+  meleeAttack: 4
+  rangedAttack: 2
+  meleeAttackRange: 1
+  rangedAttackRange: 3
+  meleeDefense: 4
+  rangedDefense: 1
   magicAttack: 0
   magicDefense: 0
+  isThisMyTurn: 0
+  movedThisTurn: 0
+  attackedThisTurn: 0
+  isNarrativeActive: 0
 --- !u!222 &1587021438
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3369,12 +3455,12 @@ GameObject:
   - component: {fileID: 1902402787}
   - component: {fileID: 1902402791}
   m_Layer: 0
-  m_Name: Mage
-  m_TagString: Untagged
+  m_Name: Jesus
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1902402787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3387,6 +3473,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754cd71d60dfdaa4d9f34d2768c310ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charName: Jesus
+  job: 
+  currentHealth: 0
+  maxHealth: 200
+  currentMana: 0
+  maxMana: 0
+  moveSpeed: 2
+  meleeAttack: 3
+  rangedAttack: 0
+  meleeAttackRange: 3
+  rangedAttackRange: 0
+  meleeDefense: 0
+  rangedDefense: 0
+  magicAttack: 0
+  magicDefense: 0
+  isThisMyTurn: 0
+  movedThisTurn: 0
+  attackedThisTurn: 0
+  isNarrativeActive: 0
 --- !u!114 &1902402788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3400,7 +3505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelTilemap: {fileID: 10002998}
-  movementRange: 2
+  startCell: {x: 0, y: 1, z: 0}
 --- !u!212 &1902402789
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3441,7 +3546,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e23caabcb4537614a97859a23165ba2a, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.69620657, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3459,8 +3564,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902402786}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 4.38, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -3477,7 +3582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf38aa33253197d44a87e3d0c8ccf569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
+  charName: 
   job: 
   currentHealth: 0
   maxHealth: 0
@@ -3486,7 +3591,13 @@ MonoBehaviour:
   moveSpeed: 0
   meleeAttack: 0
   rangedAttack: 0
+  meleeAttackRange: 0
+  rangedAttackRange: 0
   meleeDefense: 0
   rangedDefense: 0
   magicAttack: 0
   magicDefense: 0
+  isThisMyTurn: 0
+  movedThisTurn: 0
+  attackedThisTurn: 0
+  isNarrativeActive: 0

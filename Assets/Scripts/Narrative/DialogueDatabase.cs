@@ -28,13 +28,13 @@ public class DialogueDatabase : MonoBehaviour
 				
 				Dictionary<string, string> attributes = new Dictionary<string, string>();
 				
-				attributes.Add("outcome1", dialogue[3]);
-				attributes.Add("outcome2", dialogue[4]);
-				attributes.Add("first sentence", dialogue[5]);
-				attributes.Add("option1", dialogue[6]);
-				attributes.Add("response1", dialogue[7]);
-				attributes.Add("option2", dialogue[8]);
-				attributes.Add("response2", dialogue[9]);
+				attributes.Add("first sentence", dialogue[3]);
+				attributes.Add("option1", dialogue[4]);
+				attributes.Add("option2", dialogue[5]);
+				attributes.Add("response1", dialogue[6]);
+				attributes.Add("response2", dialogue[7]);
+				attributes.Add("outcome1", dialogue[8]);
+				attributes.Add("outcome2", dialogue[9]);
 				
 				dialogueOptions.Add(condition, attributes);
 			}

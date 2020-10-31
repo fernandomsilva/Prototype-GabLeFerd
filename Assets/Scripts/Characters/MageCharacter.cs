@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MageCharacter : MonoBehaviour
+public class MageCharacter : CharacterStats
 {
     CharacterStats mageStats;
-
 
     // Start is called before the first frame update
     void Start()
     {
-        mageStats = GetComponent<CharacterStats>();
-        mageStats.maxHealth = 50;
-        //mageStats = new CharacterStats();
-
+		currentHealth = maxHealth;
+		currentMana = maxMana;
     }
 
     // Update is called once per frame

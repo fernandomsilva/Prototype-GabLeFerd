@@ -7,19 +7,34 @@ public class CharacterControl : MonoBehaviour
 {
 	public Tilemap levelTilemap;
 	
-	public int movementRange;
+	public Vector3Int startCell;
+	
+	private CharacterStats myStats;
 	
 	private OccupiedCells blockedCells;
 	private List<Vector3Int> rangeOfAction;
 	
+	private Color originalTileColor;
+	
+	private string currentAction;
+	
+	private NarrativeTriggers storyTriggers;
+	
     // Start is called before the first frame update
     void Start()
     {
+		myStats = GetComponent<CharacterStats>();
+		
 		blockedCells = levelTilemap.GetComponent<OccupiedCells>();
 
-        MoveToCell(new Vector3Int(0, 0, 0));
+        MoveToCell(startCell);
+		originalTileColor = levelTilemap.GetColor(new Vector3Int(0, 0, 0));
 		
 		rangeOfAction = new List<Vector3Int>();
+		
+		currentAction = "";
+		
+		storyTriggers = GameObject.Find("Narrative Director").GetComponent<NarrativeTriggers>();
     }
 	
 	void PaintTiles(List<Vector3Int> tilesToPaint, Color color)
@@ -41,57 +56,145 @@ public class CharacterControl : MonoBehaviour
 		blockedCells.AddOccupiedCell(cell);
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("m"))
+	void CalculateRange(int rangeLength, bool isAreaRange, bool movement, List<Vector3Int> range)
+	{
+		Vector3Int myCellPosition = levelTilemap.WorldToCell(transform.position);
+		range.Clear();
+
+		range.Add(myCellPosition);
+
+		for (int i=rangeLength; i>=0; i--)
 		{
-			Vector3Int myCellPosition = levelTilemap.WorldToCell(transform.position);
-			rangeOfAction.Clear();
-
-			rangeOfAction.Add(myCellPosition);
-
-			for (int i=movementRange; i>=0; i--)
+			if (isAreaRange)
 			{
-				for (int j=movementRange-i; j>=0; j--)
+				for (int j=rangeLength-i; j>=0; j--)
 				{
 					Vector3Int cell = myCellPosition + (new Vector3Int(i, j, 0));
-					if (!blockedCells.IsCellOccupied(cell))
+					range.Add(cell);
+					
+					if (i > 0)
 					{
-						rangeOfAction.Add(cell);
+						cell = myCellPosition + (new Vector3Int(-i, j, 0));
+						range.Add(cell);
 					}
 					
-					cell = myCellPosition + (new Vector3Int(-i, j, 0));
-					if (i > 0 && !blockedCells.IsCellOccupied(cell))
+					if (j > 0)
 					{
-						rangeOfAction.Add(cell);
+						cell = myCellPosition + (new Vector3Int(i, -j, 0));
+						range.Add(cell);
 					}
 					
-					cell = myCellPosition + (new Vector3Int(i, -j, 0));
-					if (j > 0 && !blockedCells.IsCellOccupied(cell))
+					if (i > 0)
 					{
-						rangeOfAction.Add(cell);
-					}
-					
-					cell = myCellPosition + (new Vector3Int(-i, -j, 0));
-					if (i > 0 && j > 0 && !blockedCells.IsCellOccupied(cell))
-					{
-						rangeOfAction.Add(cell);
+						cell = myCellPosition + (new Vector3Int(-i, -j, 0));
+						range.Add(cell);
 					}
 				}
 			}
-
-			PaintTiles(rangeOfAction, Color.red);
+			else
+			{
+				Vector3Int cell = myCellPosition + (new Vector3Int(i, 0, 0));
+				range.Add(cell);
+				cell = myCellPosition + (new Vector3Int(-i, 0, 0));
+				range.Add(cell);
+				cell = myCellPosition + (new Vector3Int(0, i, 0));
+				range.Add(cell);
+				cell = myCellPosition + (new Vector3Int(0, -i, 0));
+				range.Add(cell);
+			}
+		}
+	}
+	
+	GameObject ReturnEnemyInCell(Vector3Int cell)
+	{
+		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+		
+		foreach (GameObject enemy in enemies)
+		{
+			if (cell == levelTilemap.WorldToCell(enemy.transform.position))
+			{
+				return enemy;
+			}
 		}
 		
-		if (Input.GetMouseButtonDown(0))
+		return null;
+	}
+
+    // Update is called once per frame
+    void Update()
+    {
+		if (myStats.isThisMyTurn && !myStats.isNarrativeActive)
 		{
-			Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);			
-			Vector3Int mouseCellPosition = levelTilemap.WorldToCell(mouseWorldPosition);
-			
-			if (rangeOfAction.Contains(mouseCellPosition))
+			if (Input.GetKeyDown("m") && !myStats.movedThisTurn)
 			{
-				MoveToCell(mouseCellPosition);
+				CalculateRange(myStats.moveSpeed, true, true, rangeOfAction);
+
+				PaintTiles(rangeOfAction, Color.red);
+				
+				currentAction = "move";
+			}
+			if (Input.GetKeyDown("a") && !myStats.attackedThisTurn)
+			{
+				CalculateRange(myStats.meleeAttackRange, false, false, rangeOfAction);
+
+				PaintTiles(rangeOfAction, Color.red);
+				
+				currentAction = "meleeAttack";
+			}
+			
+			if (Input.GetMouseButtonDown(0))
+			{
+				Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);			
+				Vector3Int mouseCellPosition = levelTilemap.WorldToCell(mouseWorldPosition);
+				
+				if (rangeOfAction.Contains(mouseCellPosition))
+				{
+					if (currentAction == "move")
+					{
+						if (!blockedCells.IsCellOccupied(mouseCellPosition))
+						{
+							Vector3Int myPreviousCell = levelTilemap.WorldToCell(transform.position);
+							string myPreviousPosition = "(" + myPreviousCell.x + "," + myPreviousCell.y + "," + myPreviousCell.z + ")";
+							
+							MoveToCell(mouseCellPosition);
+							myStats.movedThisTurn = true;
+							
+							Vector3Int myCurrentCellPosition = levelTilemap.WorldToCell(transform.position);
+							string myCurrentPosition = "(" + myCurrentCellPosition.x + "," + myCurrentCellPosition.y + "," + myCurrentCellPosition.z + ")";
+							
+							string[] eventParameters = {myStats.charName, "move", myPreviousPosition, myCurrentPosition};
+							storyTriggers.EventPast(eventParameters);
+						}
+					}
+					else
+					{
+						GameObject enemy = ReturnEnemyInCell(mouseCellPosition);
+						if (enemy != null)
+						{
+							CharacterStats enemyStats = enemy.GetComponent<CharacterStats>();
+							
+							enemyStats.GotHit(myStats.meleeAttack, "melee");
+							myStats.attackedThisTurn = true;
+							
+							string[] eventParameters = {myStats.charName, "melee", enemyStats.charName};
+							storyTriggers.EventPast(eventParameters);
+						}
+					}
+					
+					currentAction = "";
+
+					PaintTiles(rangeOfAction, originalTileColor);
+					rangeOfAction.Clear();
+				}
+			}
+			else if (Input.GetMouseButtonDown(1))
+			{
+				if (currentAction != "")
+				{
+					currentAction = "";
+					PaintTiles(rangeOfAction, originalTileColor);
+					rangeOfAction.Clear();
+				}
 			}
 		}
     }
