@@ -11,19 +11,28 @@ public class NarrativeTriggers : MonoBehaviour
 	private DialogueDatabase dialogueDB;
 	private NarrativeManager manager;
 	
+	private int enemyFullPartySize;
+	
     // Start is called before the first frame update
     void Start()
-    {	
+    {		
 		pastEvents = new Stack<string[]>();
 		
 		dialogueDB = GetComponent<DialogueDatabase>();
 		
 		manager = GetComponent<NarrativeManager>();
+		
+		enemyFullPartySize = -1;
     }
 	
 	public void EventPast(string[] eventThatJustHappened)
 	{
 		pastEvents.Push(eventThatJustHappened);
+		
+		if (enemyFullPartySize == -1)
+		{
+			enemyFullPartySize = manager.GetListOfCharactersAliveWithTag("Enemy").Count;
+		}
 		
 		CheckForTriggers();
 	}
@@ -75,12 +84,68 @@ public class NarrativeTriggers : MonoBehaviour
 					if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 					{
 						manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+						dialogueDB.RemoveDialogueCondition(dialogueReference);
+						return;
 					}
 				}
 			}
 		}
 		else if (latestEvent[1] == "melee")
 		{
+			string enemyCharacterName = latestEvent[2];
+			string dialogueReference = "firstpartymembertodie,any," + enemyCharacterName;
+			
+			int currentEnemyPartySize = manager.GetListOfCharactersAliveWithTag("Enemy").Count;
+			
+			if (currentEnemyPartySize == enemyFullPartySize - 1)
+			{
+				if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
+				{
+					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+					dialogueDB.RemoveDialogueCondition(dialogueReference);
+					return;
+				}
+			}
+
+			dialogueReference = "friendsfighting," + playerCharacterName + "," + enemyCharacterName;
+			if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
+			{
+				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+				dialogueDB.RemoveDialogueCondition(dialogueReference);
+				return;
+			}
+
+			dialogueReference = "firstfight,any," + enemyCharacterName;
+			
+			if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
+			{
+				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+				dialogueDB.RemoveDialogueCondition(dialogueReference);
+				return;
+			}
+
+			dialogueReference = "lowhealth,any," + enemyCharacterName;
+			CharacterStats enemy = manager.GetCharacter(enemyCharacterName);
+
+			if (enemy.PercentOfHealthLeft() <= 0.3 && dialogueDB.IsConditionInDialogueOptions(dialogueReference))
+			{
+				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+				dialogueDB.RemoveDialogueCondition(dialogueReference);
+				return;
+			}
+			
+			List<string> enemiesAlive = manager.GetListOfCharactersAliveWithTag("Enemy");
+			if (enemiesAlive.Count == 1)
+			{
+				dialogueReference = "lastmanstanding,any," + enemiesAlive[0];
+			
+				if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
+				{
+					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+					dialogueDB.RemoveDialogueCondition(dialogueReference);
+					return;
+				}
+			}		
 		}
 	}
 

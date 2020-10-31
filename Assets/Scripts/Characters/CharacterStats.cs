@@ -78,6 +78,11 @@ public class CharacterStats : MonoBehaviour
 		return ((float) moveSpeed) + (((float) maxHealth) / 1000.0f) + randomInitiativeValue;
 	}
 
+	public float PercentOfHealthLeft()
+	{
+		return (float) currentHealth / (float) maxHealth;
+	}
+
 	public void GotHit(int opponentAttack, string type)
 	{
 		if (type == "melee")

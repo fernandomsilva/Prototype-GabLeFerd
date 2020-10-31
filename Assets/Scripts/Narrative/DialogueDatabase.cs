@@ -50,6 +50,11 @@ public class DialogueDatabase : MonoBehaviour
 	{
 		return dialogueOptions[condition];
 	}
+	
+	public void RemoveDialogueCondition(string condition)
+	{
+		dialogueOptions.Remove(condition);
+	}
 
     // Update is called once per frame
     void Update()
