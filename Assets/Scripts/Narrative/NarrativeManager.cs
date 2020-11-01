@@ -402,7 +402,7 @@ public class NarrativeManager : MonoBehaviour
 				Vector3Int cellPosition = levelTilemap.WorldToCell(characterToTeleport.GetWorldPosition());
 				cellPosition = cellPosition * -1;
 				
-				characterToTeleport.MoveToWorldPosition(levelTilemap.CellToWorld(cellPosition));
+				characterToTeleport.MoveToWorldPosition(levelTilemap.GetCellCenterWorld(cellPosition));
 			}
 		}
 		else if (effect.Contains("summon-monster-party"))
