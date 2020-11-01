@@ -141,6 +141,11 @@ public class CharacterControl : MonoBehaviour
 				
 				currentAction = "meleeAttack";
 			}
+			if (Input.GetKeyDown("p"))
+			{
+				myStats.movedThisTurn = true;
+				myStats.attackedThisTurn = true;
+			}
 			
 			if (Input.GetMouseButtonDown(0))
 			{

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NarrativeManager : MonoBehaviour
@@ -203,6 +204,100 @@ public class NarrativeManager : MonoBehaviour
 	{
 		ChooseDialogueOption(2);
 	}
+		
+	void ApplyOutcomeEffects(string outcome)
+	{
+		if (outcome == "none")
+		{
+			return;
+		}
+		if (outcome == "end")
+		{
+			return;
+		}
+		
+		string[] outcomeElements = outcome.Split('|');
+		string effect = outcomeElements[0];
+		string allTargets = outcomeElements[1];
+		
+		List<string> targets = new List<string>();
+		
+		if (allTargets.Contains(","))
+		{
+			string[] arrayOfTargets = allTargets.Split(',');
+			
+			foreach (string targetName in arrayOfTargets)
+			{
+				targets.Add(targetName);
+			}
+		}
+		else
+		{
+			targets.Add(allTargets);
+		}
+		
+		if (effect.Contains("bonus"))
+		{
+			string[] arrayOfAttributes = effect.Split('-');
+			
+			foreach (string attribute in arrayOfAttributes)
+			{
+				foreach (string targetToBuff in targets)
+				{
+					CharacterStats characterToBuff = GetCharacter(targetToBuff);
+					
+					if (attribute == "all")
+					{
+						characterToBuff.Buff("maxhp", 1.5f);
+						characterToBuff.Buff("attack", 1.5f);
+						characterToBuff.Buff("defense", 1.5f);
+						characterToBuff.Buff("movement", 1.5f);
+						characterToBuff.Buff("magicattack", 1.5f);
+						characterToBuff.Buff("magicdefense", 1.5f);
+					}
+					else
+					{
+						characterToBuff.Buff(attribute, 1.5f);
+					}
+				}
+			}
+		}
+		else if (effect.Contains("debuff"))
+		{
+			string[] arrayOfAttributes = effect.Split('-');
+			
+			foreach (string attribute in arrayOfAttributes)
+			{
+				foreach (string targetToBuff in targets)
+				{
+					CharacterStats characterToBuff = GetCharacter(targetToBuff);
+					
+					if (attribute == "all")
+					{
+						characterToBuff.Buff("maxhp", 0.5f);
+						characterToBuff.Buff("attack", 0.5f);
+						characterToBuff.Buff("defense", 0.5f);
+						characterToBuff.Buff("movement", 0.5f);
+						characterToBuff.Buff("magicattack", 0.5f);
+						characterToBuff.Buff("magicdefense", 0.5f);
+					}
+					else
+					{
+						characterToBuff.Buff(attribute, 0.5f);
+					}
+				}
+			}
+		}
+		else if (effect.Contains("heal-max-hp"))
+		{
+			foreach (string targetToHeal in targets)
+			{
+				CharacterStats characterToHeal = GetCharacter(targetToHeal);
+				
+				characterToHeal.Heal(characterToHeal.maxHealth - characterToHeal.currentHealth);
+			}
+		}
+	}
 	
     // Update is called once per frame
     void Update()
@@ -231,12 +326,19 @@ public class NarrativeManager : MonoBehaviour
 				{
 					dialogueBox.SetActive(false);
 					int outcome_value = dialoguePhase - 1;
-					Debug.Log(currentDialogueTree["outcome" + outcome_value]);
+					
+					ApplyOutcomeEffects(currentDialogueTree["outcome" + outcome_value]);
 					
 					narrativeActive = false;
 					UpdateNarrativeStateToCharacters(narrativeActive);
+					
 				}
 			}
+		}
+		
+		if (Input.GetKeyDown("r"))
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
     }
 }

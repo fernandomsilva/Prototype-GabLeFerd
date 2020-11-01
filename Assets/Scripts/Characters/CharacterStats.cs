@@ -56,6 +56,41 @@ public class CharacterStats : MonoBehaviour
 		return tag;
 	}
 	
+	public void Buff(string attribute, float intensity)
+	{
+		if (attribute == "maxhp")
+		{
+			int amountOfExtraHealth = maxHealth;
+			
+			maxHealth = ((int) Mathf.Ceil(intensity * ((float) maxHealth)));
+			amountOfExtraHealth = maxHealth - amountOfExtraHealth;
+			
+			currentHealth += amountOfExtraHealth;
+		}
+		else if (attribute == "attack")
+		{
+			meleeAttack = ((int) Mathf.Ceil(intensity * ((float) meleeAttack)));
+			rangedAttack = ((int) Mathf.Ceil(intensity * ((float) rangedAttack)));
+		}
+		else if (attribute == "defense")
+		{
+			meleeDefense = ((int) Mathf.Ceil(intensity * ((float) meleeDefense)));
+			rangedDefense = ((int) Mathf.Ceil(intensity * ((float) rangedDefense)));
+		}
+		else if (attribute == "movement")
+		{
+			moveSpeed = moveSpeed + ((int) Mathf.Floor(intensity));
+		}
+		else if (attribute == "magicattack")
+		{
+			magicAttack = ((int) Mathf.Ceil(intensity * ((float) magicAttack)));
+		}
+		else if (attribute == "magicdefense")
+		{
+			magicDefense = ((int) Mathf.Ceil(intensity * ((float) magicDefense)));
+		}
+	}
+	
 	public void StartTurn()
 	{
 		isThisMyTurn = true;
@@ -81,6 +116,11 @@ public class CharacterStats : MonoBehaviour
 	public float PercentOfHealthLeft()
 	{
 		return (float) currentHealth / (float) maxHealth;
+	}
+	
+	public void Heal(int amountToHeal)
+	{
+		currentHealth += amountToHeal;
 	}
 
 	public void GotHit(int opponentAttack, string type)
