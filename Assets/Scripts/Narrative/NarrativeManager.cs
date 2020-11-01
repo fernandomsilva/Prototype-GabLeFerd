@@ -10,6 +10,8 @@ public class NarrativeManager : MonoBehaviour
 {
 	public GameObject dialogueBox;
 	public Text dialogueBoxText;
+	public Image character1PortraitHolder;
+	public Image character2PortraitHolder;
 	public GameObject dialogueBoxOption1;
 	private Button buttonOption1;
 	public Text dialogueBoxOption1Text;
@@ -189,7 +191,7 @@ public class NarrativeManager : MonoBehaviour
 		}
 	}
 
-	public void TriggerNarrative(Dictionary<string, string> dialogueTree)
+	public void TriggerNarrative(Dictionary<string, string> dialogueTree, string enemyName)
 	{
 		narrativeActive = true;
 		UpdateNarrativeStateToCharacters(narrativeActive);
@@ -197,6 +199,9 @@ public class NarrativeManager : MonoBehaviour
 		currentDialogueTree = dialogueTree;
 		
 		dialoguePhase = 0;
+		character1PortraitHolder.sprite = currentCharacterActing.portrait;
+		character2PortraitHolder.sprite = GetCharacter(enemyName).GetComponent<CharacterStats>().portrait;
+		
 		dialogueBoxText.text = currentDialogueTree["first sentence"];
 		dialogueBox.SetActive(true);
 	}

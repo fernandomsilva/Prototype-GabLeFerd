@@ -83,7 +83,7 @@ public class NarrativeTriggers : MonoBehaviour
 					
 					if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 					{
-						manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+						manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference), enemy);
 						dialogueDB.RemoveDialogueCondition(dialogueReference);
 						return;
 					}
@@ -102,7 +102,7 @@ public class NarrativeTriggers : MonoBehaviour
 				enemyFullPartySize = -100;
 				if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 				{
-					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference), enemyCharacterName);
 					dialogueDB.RemoveDialogueCondition(dialogueReference);
 					return;
 				}
@@ -115,7 +115,7 @@ public class NarrativeTriggers : MonoBehaviour
 			
 				if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 				{
-					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference), enemyCharacterName);
 					dialogueDB.RemoveDialogueCondition(dialogueReference);
 					return;
 				}
@@ -124,7 +124,7 @@ public class NarrativeTriggers : MonoBehaviour
 			dialogueReference = "friendsfighting," + playerCharacterName + "," + enemyCharacterName;
 			if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 			{
-				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference), enemyCharacterName);
 				dialogueDB.RemoveDialogueCondition(dialogueReference);
 				return;
 			}
@@ -133,7 +133,7 @@ public class NarrativeTriggers : MonoBehaviour
 			
 			if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 			{
-				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference), enemyCharacterName);
 				dialogueDB.RemoveDialogueCondition(dialogueReference);
 				return;
 			}
@@ -143,7 +143,7 @@ public class NarrativeTriggers : MonoBehaviour
 
 			if (enemy.PercentOfHealthLeft() <= 0.3 && dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 			{
-				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference), enemyCharacterName);
 				dialogueDB.RemoveDialogueCondition(dialogueReference);
 				return;
 			}		

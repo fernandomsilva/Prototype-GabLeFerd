@@ -6,6 +6,8 @@ public class CharacterStats : MonoBehaviour
 {
     public string charName;
     public string job;
+	
+	public Sprite portrait;
 
     // atributos
     public int currentHealth;
