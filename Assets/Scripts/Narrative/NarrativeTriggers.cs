@@ -99,6 +99,20 @@ public class NarrativeTriggers : MonoBehaviour
 			
 			if (currentEnemyPartySize == enemyFullPartySize - 1)
 			{
+				enemyFullPartySize = -100;
+				if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
+				{
+					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
+					dialogueDB.RemoveDialogueCondition(dialogueReference);
+					return;
+				}
+			}
+			
+			List<string> enemiesAlive = manager.GetListOfCharactersAliveWithTag("Enemy");
+			if (enemiesAlive.Count == 1)
+			{
+				dialogueReference = "lastmanstanding,any," + enemiesAlive[0];
+			
 				if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
 				{
 					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
@@ -132,19 +146,6 @@ public class NarrativeTriggers : MonoBehaviour
 				manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
 				dialogueDB.RemoveDialogueCondition(dialogueReference);
 				return;
-			}
-			
-			List<string> enemiesAlive = manager.GetListOfCharactersAliveWithTag("Enemy");
-			if (enemiesAlive.Count == 1)
-			{
-				dialogueReference = "lastmanstanding,any," + enemiesAlive[0];
-			
-				if (dialogueDB.IsConditionInDialogueOptions(dialogueReference))
-				{
-					manager.TriggerNarrative(dialogueDB.GetDialogueAttributes(dialogueReference));
-					dialogueDB.RemoveDialogueCondition(dialogueReference);
-					return;
-				}
 			}		
 		}
 	}
