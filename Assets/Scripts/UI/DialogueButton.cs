@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MageCharacter : CharacterStats
+public class DialogueButton : MonoBehaviour
 {
-    CharacterStats mageStats;
-
     // Start is called before the first frame update
     void Start()
     {
-		currentHealth = maxHealth;
-		currentMana = maxMana;
+        
     }
 
     // Update is called once per frame
