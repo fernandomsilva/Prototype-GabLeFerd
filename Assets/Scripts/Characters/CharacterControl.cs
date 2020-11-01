@@ -127,6 +127,12 @@ public class CharacterControl : MonoBehaviour
 		{
 			if (Input.GetKeyDown("m") && !myStats.movedThisTurn)
 			{
+				if (rangeOfAction.Count > 0)
+				{
+					PaintTiles(rangeOfAction, originalTileColor);
+					rangeOfAction.Clear();
+				}
+				
 				CalculateRange(myStats.moveSpeed, true, true, rangeOfAction);
 
 				PaintTiles(rangeOfAction, Color.red);
@@ -134,12 +140,46 @@ public class CharacterControl : MonoBehaviour
 				currentAction = "move";
 			}
 			if (Input.GetKeyDown("a") && !myStats.attackedThisTurn)
-			{
+			{				
+				if (rangeOfAction.Count > 0)
+				{
+					PaintTiles(rangeOfAction, originalTileColor);
+					rangeOfAction.Clear();
+				}
+
 				CalculateRange(myStats.meleeAttackRange, false, false, rangeOfAction);
 
 				PaintTiles(rangeOfAction, Color.red);
 				
 				currentAction = "meleeAttack";
+			}
+			if (Input.GetKeyDown("s") && !myStats.attackedThisTurn)
+			{				
+				if (rangeOfAction.Count > 0)
+				{
+					PaintTiles(rangeOfAction, originalTileColor);
+					rangeOfAction.Clear();
+				}
+
+				CalculateRange(myStats.rangedAttackRange, false, false, rangeOfAction);
+
+				PaintTiles(rangeOfAction, Color.red);
+				
+				currentAction = "rangedAttack";
+			}
+			if (Input.GetKeyDown("d") && !myStats.attackedThisTurn)
+			{				
+				if (rangeOfAction.Count > 0)
+				{
+					PaintTiles(rangeOfAction, originalTileColor);
+					rangeOfAction.Clear();
+				}
+
+				CalculateRange(myStats.rangedAttackRange, false, false, rangeOfAction);
+
+				PaintTiles(rangeOfAction, Color.red);
+				
+				currentAction = "magicAttack";
 			}
 			if (Input.GetKeyDown("p"))
 			{
@@ -178,7 +218,19 @@ public class CharacterControl : MonoBehaviour
 						{
 							CharacterStats enemyStats = enemy.GetComponent<CharacterStats>();
 							
-							enemyStats.GotHit(myStats.meleeAttack, "melee");
+							if (currentAction == "melee")
+							{
+								enemyStats.GotHit(myStats.meleeAttack, "melee");
+							}
+							else if (currentAction == "rangedAttack")
+							{
+								enemyStats.GotHit(myStats.rangedAttack, "rangedAttack");
+							}
+							else if (currentAction == "magicAttack")
+							{
+								enemyStats.GotHit(myStats.magicAttack, "magicAttack");
+							}
+							
 							myStats.attackedThisTurn = true;
 							
 							string[] eventParameters = {myStats.charName, "melee", enemyStats.charName};

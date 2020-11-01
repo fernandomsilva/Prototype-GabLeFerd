@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using static System.Environment;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class NarrativeManager : MonoBehaviour
@@ -17,6 +19,8 @@ public class NarrativeManager : MonoBehaviour
 	
 	public bool narrativeActive;
 	
+	public Tilemap levelTilemap;
+	
 	private int dialoguePhase;
 	private Dictionary<string, string> currentDialogueTree;
 	
@@ -27,6 +31,8 @@ public class NarrativeManager : MonoBehaviour
 	
 	private Queue<CharacterStats> currentTurnOrder;
 	private CharacterStats currentCharacterActing;
+	
+	public GameObject elementalCharacterPrefab;
 	
     // Start is called before the first frame update
     void Start()
@@ -42,6 +48,19 @@ public class NarrativeManager : MonoBehaviour
 		currentDialogueTree = null;
 		
         charactersInScene = new Dictionary<string, CharacterStats>();
+		FindAllCharactersInScene();
+		
+		characterActionOrder = new Dictionary<float, CharacterStats>();
+		currentTurnOrder = new Queue<CharacterStats>();
+		
+		currentCharacterActing = null;
+
+		NextTurn();
+    }
+	
+	void FindAllCharactersInScene()
+	{
+		charactersInScene.Clear();
 		
 		foreach (GameObject playerCharacter in GameObject.FindGameObjectsWithTag("Player"))
 		{
@@ -51,14 +70,7 @@ public class NarrativeManager : MonoBehaviour
 		{
 			charactersInScene.Add(enemyCharacter.GetComponent<CharacterStats>().charName, enemyCharacter.GetComponent<CharacterStats>());
 		}
-		
-		characterActionOrder = new Dictionary<float, CharacterStats>();
-		currentTurnOrder = new Queue<CharacterStats>();
-		
-		currentCharacterActing = null;
-
-		NextTurn();
-    }
+	}
 
 	public CharacterStats GetCharacter(string name)
 	{
@@ -102,6 +114,7 @@ public class NarrativeManager : MonoBehaviour
 	
 	void OrderCharacterActions()
 	{
+		FindAllCharactersInScene();
 		characterActionOrder.Clear();
 		
 		foreach (string characterName in charactersInScene.Keys)
@@ -154,11 +167,16 @@ public class NarrativeManager : MonoBehaviour
 			CreateTurnOrder();
 		}
 		
+		if (currentTurnOrder.Count == 0)
+		{
+			return;
+		}
+		
 		if (nextCharacter == null || nextCharacter.currentHealth <= 0)
 		{
 			nextCharacter = currentTurnOrder.Dequeue();
 		}
-		
+				
 		currentCharacterActing = nextCharacter;
 		currentCharacterActing.StartTurn();
 	}
@@ -204,6 +222,48 @@ public class NarrativeManager : MonoBehaviour
 	{
 		ChooseDialogueOption(2);
 	}
+	
+	void SummonMonsters(int quantity, Vector3Int summonerCellPosition)
+	{
+		List<Vector3Int> potentialCells = new List<Vector3Int>();
+		potentialCells.Add(summonerCellPosition + new Vector3Int(1, 0, 0));
+		potentialCells.Add(summonerCellPosition + new Vector3Int(-1, 0, 0));
+		potentialCells.Add(summonerCellPosition + new Vector3Int(0, 1, 0));
+		potentialCells.Add(summonerCellPosition + new Vector3Int(0, -1, 0));
+		potentialCells.Add(summonerCellPosition + new Vector3Int(1, 1, 0));
+		potentialCells.Add(summonerCellPosition + new Vector3Int(-1, 1, 0));
+		potentialCells.Add(summonerCellPosition + new Vector3Int(1, -1, 0));
+		potentialCells.Add(summonerCellPosition + new Vector3Int(-1, -1, 0));
+		
+		List<GameObject> monstersToSummon = new List<GameObject>();
+		
+		monstersToSummon.Add(Instantiate(elementalCharacterPrefab));
+		monstersToSummon.Add(Instantiate(elementalCharacterPrefab));
+		
+		foreach (Vector3Int position in potentialCells)
+		{
+			OccupiedCells blockedCells = levelTilemap.GetComponent<OccupiedCells>();
+			
+			if (!blockedCells.IsCellOccupied(position))
+			{
+				CharacterStats monsterStats = monstersToSummon[0].GetComponent<CharacterStats>();
+				
+				monstersToSummon[0].transform.position = levelTilemap.GetCellCenterWorld(position);
+				monsterStats.charName = monsterStats.charName + Random.Range(0, 1000);
+				monstersToSummon[0].SetActive(true);
+				monstersToSummon.RemoveAt(0);
+			}
+			
+			if (monstersToSummon.Count <= 0)
+			{
+				break;
+			}
+		}
+		
+		monstersToSummon.Clear();
+		
+		FindAllCharactersInScene();
+	}
 		
 	void ApplyOutcomeEffects(string outcome)
 	{
@@ -213,6 +273,11 @@ public class NarrativeManager : MonoBehaviour
 		}
 		if (outcome == "end")
 		{
+			foreach (string charName in GetListOfCharactersAlive())
+			{
+				GetCharacter(charName).EscapeFromBattlefield();
+			}
+			
 			return;
 		}
 		
@@ -283,7 +348,15 @@ public class NarrativeManager : MonoBehaviour
 					}
 					else
 					{
-						characterToBuff.Buff(attribute, 0.5f);
+						if (attribute == "allattacks")
+						{
+							characterToBuff.Buff("attack", 0.5f);
+							characterToBuff.Buff("magicattack", 0.5f);
+						}
+						else
+						{
+							characterToBuff.Buff(attribute, 0.5f);
+						}
 					}
 				}
 			}
@@ -295,6 +368,111 @@ public class NarrativeManager : MonoBehaviour
 				CharacterStats characterToHeal = GetCharacter(targetToHeal);
 				
 				characterToHeal.Heal(characterToHeal.maxHealth - characterToHeal.currentHealth);
+			}
+		}
+		else if (effect.Contains("phoenix-down"))
+		{
+			foreach (string targetToRessucitate in targets)
+			{
+				float luck = Random.Range(0.0f, 1.0f);
+				
+				if (luck > 0.5f)
+				{
+					CharacterStats characterToRessucitate = GetCharacter(targetToRessucitate);
+					
+					characterToRessucitate.Ressucitate();
+				}
+			}
+		}
+		else if (effect.Contains("mp-recover"))
+		{
+			foreach (string targetToRecoverMana in targets)
+			{
+				CharacterStats characterToRecoverMana = GetCharacter(targetToRecoverMana);
+				
+				characterToRecoverMana.RecoverManaToMax();
+			}
+		}
+		else if (effect.Contains("teleport-to-other-tile"))
+		{
+			foreach (string targetToTeleport in targets)
+			{
+				CharacterStats characterToTeleport = GetCharacter(targetToTeleport);
+				
+				Vector3Int cellPosition = levelTilemap.WorldToCell(characterToTeleport.GetWorldPosition());
+				cellPosition = cellPosition * -1;
+				
+				characterToTeleport.MoveToWorldPosition(levelTilemap.GetCellCenterWorld(cellPosition));
+			}
+		}
+		else if (effect.Contains("summon-monster-party"))
+		{
+			foreach (string targetSummoner in targets)
+			{
+				CharacterStats summoner = GetCharacter(targetSummoner);
+				
+				Vector3Int summonerCellPosition = levelTilemap.WorldToCell(summoner.GetWorldPosition());
+				
+				SummonMonsters(2, summonerCellPosition);
+			}
+		}
+		else if (effect.Contains("summon-monster"))
+		{
+			foreach (string targetSummoner in targets)
+			{
+				CharacterStats summoner = GetCharacter(targetSummoner);
+				
+				Vector3Int summonerCellPosition = levelTilemap.WorldToCell(summoner.GetWorldPosition());
+				
+				SummonMonsters(1, summonerCellPosition);
+			}
+		}
+		else if (effect.Contains("aoe-damage"))
+		{
+			foreach (string attackerName in targets)
+			{
+				CharacterStats attacker = GetCharacter(attackerName);
+				
+				Vector3Int attackerCellPosition = levelTilemap.WorldToCell(attacker.GetWorldPosition());
+				
+				List<string> pottentialTargetsOfAOE = GetListOfCharactersAlive();
+				
+				foreach (string targetOfAOEName in pottentialTargetsOfAOE)
+				{
+					CharacterStats pottentialTarget = GetCharacter(targetOfAOEName);
+					
+					Vector3Int pottentialTargetCellPosition = levelTilemap.WorldToCell(pottentialTarget.GetWorldPosition());
+					float distanceBetweenCharacters = Vector3Int.Distance(pottentialTargetCellPosition, attackerCellPosition);
+					
+					if (distanceBetweenCharacters <= Mathf.Sqrt(2) + 0.05f)
+					{
+						pottentialTarget.GotHit(attacker.magicAttack, "magical");
+					}
+				}
+			}
+		}
+		else if (effect.Contains("escape"))
+		{
+			foreach (string characterToEscapeName in targets)
+			{
+				GetCharacter(characterToEscapeName).EscapeFromBattlefield();
+			}
+		}
+		else if (effect.Contains("erase-all-other-characters"))
+		{
+			if (targets.Contains("Player"))
+			{
+				targets.Add(currentCharacterActing.charName);
+			}
+			
+			List<string> aliveCharacters = GetListOfCharactersAlive();
+			
+			foreach (string aliveCharacterName in aliveCharacters)
+			{
+				if (!targets.Contains(aliveCharacterName))
+				{
+					GetCharacter(aliveCharacterName).EscapeFromBattlefield();
+				}
 			}
 		}
 	}

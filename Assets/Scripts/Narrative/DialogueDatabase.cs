@@ -34,7 +34,7 @@ public class DialogueDatabase : MonoBehaviour
 				attributes.Add("response1", dialogue[6]);
 				attributes.Add("response2", dialogue[7]);
 				attributes.Add("outcome1", dialogue[8]);
-				attributes.Add("outcome2", dialogue[9]);
+				attributes.Add("outcome2", dialogue[9].Replace("\r", "").Replace("\n", ""));
 				
 				dialogueOptions.Add(condition, attributes);
 			}
