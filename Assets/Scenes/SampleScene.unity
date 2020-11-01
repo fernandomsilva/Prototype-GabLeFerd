@@ -2464,7 +2464,6 @@ GameObject:
   - component: {fileID: 820856494}
   - component: {fileID: 820856493}
   - component: {fileID: 820856496}
-  - component: {fileID: 820856497}
   m_Layer: 0
   m_Name: Beta
   m_TagString: Enemy
@@ -2484,7 +2483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5306cd46283e66944a7c6d2902f2543d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTilemap: {fileID: 10002998}
 --- !u!212 &820856494
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2580,20 +2578,6 @@ MonoBehaviour:
   movedThisTurn: 0
   attackedThisTurn: 0
   isNarrativeActive: 0
---- !u!114 &820856497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820856492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d374a1a9588c4846a5660914d05236a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelTilemap: {fileID: 10002998}
-  startCell: {x: 2, y: 0, z: 0}
 --- !u!1 &847496418
 GameObject:
   m_ObjectHideFlags: 0
@@ -2803,7 +2787,6 @@ GameObject:
   - component: {fileID: 958924860}
   - component: {fileID: 958924859}
   - component: {fileID: 958924858}
-  - component: {fileID: 958924862}
   m_Layer: 0
   m_Name: Kylian
   m_TagString: Enemy
@@ -2854,7 +2837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5306cd46283e66944a7c6d2902f2543d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTilemap: {fileID: 10002998}
 --- !u!212 &958924860
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2919,20 +2901,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &958924862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 958924857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d374a1a9588c4846a5660914d05236a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelTilemap: {fileID: 10002998}
-  startCell: {x: 2, y: 2, z: 0}
 --- !u!1 &1127578520
 GameObject:
   m_ObjectHideFlags: 0
@@ -3064,6 +3032,9 @@ MonoBehaviour:
   dialogueBoxOption2: {fileID: 1164256905}
   dialogueBoxOption2Text: {fileID: 1434224686}
   narrativeActive: 0
+  levelTilemap: {fileID: 10002998}
+  elementalCharacterPrefab: {fileID: 6083031963570895899, guid: 1c02389e5d68a9c448305a4ea4c13064,
+    type: 3}
 --- !u!114 &1137187510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3564,8 +3535,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1625182596}
   - component: {fileID: 1625182595}
-  - component: {fileID: 1625182594}
   - component: {fileID: 1625182593}
+  - component: {fileID: 1625182594}
   m_Layer: 0
   m_Name: Jonas
   m_TagString: Enemy
@@ -3613,11 +3584,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1625182592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d374a1a9588c4846a5660914d05236a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5306cd46283e66944a7c6d2902f2543d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelTilemap: {fileID: 10002998}
-  startCell: {x: 2, y: -2, z: 0}
 --- !u!212 &1625182595
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3838,7 +3807,7 @@ MonoBehaviour:
   charName: Hugo
   job: Recruit
   currentHealth: 0
-  maxHealth: 100
+  maxHealth: 200
   currentMana: 0
   maxMana: 100
   moveSpeed: 2

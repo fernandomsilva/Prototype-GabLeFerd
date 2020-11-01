@@ -51,6 +51,11 @@ public class CharacterStats : MonoBehaviour
 		return transform.position;
 	}
 	
+	public void MoveToWorldPosition(Vector3 position)
+	{
+		transform.position = position;
+	}
+	
 	public string GetTag()
 	{
 		return tag;
@@ -123,6 +128,22 @@ public class CharacterStats : MonoBehaviour
 		currentHealth += amountToHeal;
 	}
 
+	public void Ressucitate()
+	{
+		currentHealth = maxHealth;
+		gameObject.SetActive(true);
+	}
+
+	public void RecoverMana(int amountToRecover)
+	{
+		currentMana += amountToRecover;
+	}
+	
+	public void RecoverManaToMax()
+	{
+		currentMana = maxMana;
+	}
+
 	public void GotHit(int opponentAttack, string type)
 	{
 		if (type == "melee")
@@ -137,6 +158,17 @@ public class CharacterStats : MonoBehaviour
 		{
 			currentHealth -= Mathf.Max(opponentAttack - magicDefense, 1);
 		}
+		
+		if (currentHealth <= 0)
+		{
+			gameObject.SetActive(false);
+		}
+	}
+	
+	public void EscapeFromBattlefield()
+	{
+		currentHealth = 0;
+		gameObject.SetActive(false);
 	}
 
     // Update is called once per frame
