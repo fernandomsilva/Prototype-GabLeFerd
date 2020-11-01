@@ -2444,6 +2444,8 @@ RectTransform:
   - {fileID: 904792658}
   - {fileID: 847496419}
   - {fileID: 1164256906}
+  - {fileID: 1439596265}
+  - {fileID: 1949561708}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2561,6 +2563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Beta
   job: Mage
+  portrait: {fileID: 21300000, guid: a28de84fd60d22a4a91fea5108efb3b8, type: 3}
   currentHealth: 0
   maxHealth: 297
   currentMana: 0
@@ -2808,6 +2811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Kylian
   job: Mage
+  portrait: {fileID: 21300000, guid: cf45f985a2ef6354cb9170580ba62b5a, type: 3}
   currentHealth: 0
   maxHealth: 308
   currentMana: 0
@@ -3027,6 +3031,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBox: {fileID: 509624095}
   dialogueBoxText: {fileID: 904792659}
+  character1PortraitHolder: {fileID: 1439596266}
+  character2PortraitHolder: {fileID: 1949561709}
   dialogueBoxOption1: {fileID: 847496418}
   dialogueBoxOption1Text: {fileID: 1347692028}
   dialogueBoxOption2: {fileID: 1164256905}
@@ -3323,6 +3329,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434224684}
   m_CullTransparentMesh: 0
+--- !u!1 &1439596264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1439596265}
+  - component: {fileID: 1439596267}
+  - component: {fileID: 1439596266}
+  m_Layer: 5
+  m_Name: Character 1 Portrait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1439596265
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439596264}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_Children: []
+  m_Father: {fileID: 509624099}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -401.3, y: -50.4}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1439596266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439596264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1439596267
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439596264}
+  m_CullTransparentMesh: 0
 --- !u!1 &1448113020
 GameObject:
   m_ObjectHideFlags: 0
@@ -3471,6 +3551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Petros
   job: Knight
+  portrait: {fileID: 21300000, guid: 6e95aeae85fb1dc44aa3c522e9d23909, type: 3}
   currentHealth: 0
   maxHealth: 590
   currentMana: 0
@@ -3558,6 +3639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Jonas
   job: Knight
+  portrait: {fileID: 21300000, guid: a75c3f581e0cabb4680f5762a8c2453b, type: 3}
   currentHealth: 0
   maxHealth: 592
   currentMana: 0
@@ -3806,6 +3888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Hugo
   job: Recruit
+  portrait: {fileID: 21300000, guid: 8b6c4b1f3d79b2140a96040aaff6e412, type: 3}
   currentHealth: 0
   maxHealth: 544
   currentMana: 0
@@ -3823,6 +3906,80 @@ MonoBehaviour:
   movedThisTurn: 0
   attackedThisTurn: 0
   isNarrativeActive: 0
+--- !u!1 &1949561707
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1949561708}
+  - component: {fileID: 1949561710}
+  - component: {fileID: 1949561709}
+  m_Layer: 5
+  m_Name: Character 2 Portrait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1949561708
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949561707}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_Children: []
+  m_Father: {fileID: 509624099}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 390.2, y: -50.4}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1949561709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949561707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1949561710
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949561707}
+  m_CullTransparentMesh: 0
 --- !u!1 &1972039563
 GameObject:
   m_ObjectHideFlags: 0
@@ -3856,6 +4013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Crow
   job: Recruit
+  portrait: {fileID: 21300000, guid: cba2ff52fd0c30e4fb79ad85de318634, type: 3}
   currentHealth: 0
   maxHealth: 550
   currentMana: 0
