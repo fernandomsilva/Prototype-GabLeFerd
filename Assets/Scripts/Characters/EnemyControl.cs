@@ -74,6 +74,27 @@ public class EnemyControl : MonoBehaviour
 		return distanceToPlayerCharacters;
 	}
 	
+	List<CharacterStats> PlayerCharactersInRange(Vector3Int myCellPosition, int range)
+	{
+		List<CharacterStats> playerCharactersInRange = new List<CharacterStats>();
+		
+		foreach (CharacterStats playerCharacter in playerCharactersInBattle)
+		{
+			if (playerCharacter.currentHealth > 0)
+			{
+				Vector3Int playerCharacterCellPosition = levelTilemap.WorldToCell(playerCharacter.GetWorldPosition());
+				float distance = Mathf.Abs(playerCharacterCellPosition.x - myCellPosition.x) + Mathf.Abs(playerCharacterCellPosition.y - myCellPosition.y);
+				
+				if (distance <= range)
+				{
+					playerCharactersInRange.Add(playerCharacter);
+				}
+			}
+		}
+		
+		return playerCharactersInRange;
+	}
+	
 	void CalculateRange(int rangeLength, bool isAreaRange, bool movement, List<Vector3Int> range)
 	{
 		Vector3Int myCellPosition = levelTilemap.WorldToCell(transform.position);
@@ -181,19 +202,55 @@ public class EnemyControl : MonoBehaviour
 				
 				MoveToCell(rangeOfAction[index]);
 			}
+
+			List<int> strength = new List<int>();
+			strength.Add(myStats.meleeAttack);
+			strength.Add(myStats.rangedAttack);
+			strength.Add(myStats.magicAttack);
 			
-			/*Dictionary<float, CharacterStats> distanceDict = DistanceToPlayerCharacters();
+			strength.Sort();
+			strength.Reverse();
 			
-			List<float> orderedDistance = new List<float>(distanceDict.Keys);
-			orderedDistance.Sort();
-			
-			foreach (float k in orderedDistance)
+			foreach (int power in strength)
 			{
-				Debug.Log(myStats.moveSpeed >= k);
-				Debug.Log(distanceDict[k].charName + " : " + k);
-			}*/
+				if (myStats.meleeAttack == power)
+				{
+					List<CharacterStats> charactersInRange = PlayerCharactersInRange(myCellPosition, myStats.meleeAttackRange);
+					
+					if (charactersInRange.Count > 0)
+					{
+						charactersInRange[0].GotHit(power, "melee");
+					}
+					
+					break;
+				}
+				if (myStats.rangedAttack == power)
+				{
+					List<CharacterStats> charactersInRange = PlayerCharactersInRange(myCellPosition, myStats.rangedAttackRange);
+					
+					if (charactersInRange.Count > 0)
+					{
+						charactersInRange[0].GotHit(power, "ranged");
+					}
+					
+					break;
+				}
+				if (myStats.magicAttack == power)
+				{
+					List<CharacterStats> charactersInRange = PlayerCharactersInRange(myCellPosition, myStats.rangedAttackRange);
+					
+					if (charactersInRange.Count > 0)
+					{
+						charactersInRange[0].GotHit(power, "magical");
+					}
+					
+					break;
+				}
+			}
 			
-			myStats.isThisMyTurn = false;
+			myStats.movedThisTurn = true;
+			myStats.attackedThisTurn = true;
+			//myStats.isThisMyTurn = false;
 		}
     }
 }
