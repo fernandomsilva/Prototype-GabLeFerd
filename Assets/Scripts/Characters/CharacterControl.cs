@@ -218,7 +218,7 @@ public class CharacterControl : MonoBehaviour
 						{
 							CharacterStats enemyStats = enemy.GetComponent<CharacterStats>();
 							
-							if (currentAction == "melee")
+							if (currentAction == "meleeAttack")
 							{
 								enemyStats.GotHit(myStats.meleeAttack, "melee");
 							}
